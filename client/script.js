@@ -1,54 +1,70 @@
- // Create a Three.js scene
- const scene = new THREE.Scene();
- const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
- const renderer = new THREE.WebGLRenderer();
- renderer.setSize(window.innerWidth, window.innerHeight);
- document.body.appendChild(renderer.domElement);
+ console.log("hi!")
+ // three.js variables
+ let camera, scene, renderer
+ let mesh
 
- // Create a Cannon.js world
- const world = new CANNON.World();
- world.gravity.set(0, -9.82, 0); // gravity (m/s²), along the negative Y-axis
+ // cannon.js variables
+ let world
+ let body
 
- // Create a ground plane (Cannon.js)
- const groundShape = new CANNON.Plane();
- const groundBody = new CANNON.Body({ mass: 0 });
- groundBody.addShape(groundShape);
- world.addBody(groundBody);
+ initThree()
+ initCannon()
+ animate()
 
- // Create a ground plane (Three.js)
- const groundGeometry = new THREE.PlaneGeometry(10, 10);
- const groundMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.DoubleSide });
- const ground = new THREE.Mesh(groundGeometry, groundMaterial);
- ground.rotation.x = -Math.PI / 2;
- scene.add(ground);
+ function initThree() {
+   // Camera
+   camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100)
+   camera.position.z = 5
 
- // Create a ball (Cannon.js)
- const ballShape = new CANNON.Sphere(0.5); // radius
- const ballBody = new CANNON.Body({ mass: 1 });
- ballBody.addShape(ballShape);
- ballBody.position.set(0, 3, 0); // initial position
- world.addBody(ballBody);
+   // Scene
+   scene = new THREE.Scene()
 
- // Create a ball (Three.js)
- const ballGeometry = new THREE.SphereGeometry(0.5, 32, 32);
- const ballMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
- const ball = new THREE.Mesh(ballGeometry, ballMaterial);
- scene.add(ball);
+   // Renderer
+   renderer = new THREE.WebGLRenderer({ antialias: true })
+   renderer.setSize(window.innerWidth, window.innerHeight)
 
- // Animation loop
- function animate() {
-     requestAnimationFrame(animate);
+   document.body.appendChild(renderer.domElement)
 
-     // Step the physics world
-     world.step(1 / 60);
+   window.addEventListener('resize', onWindowResize)
 
-     // Update the Three.js objects based on Cannon.js physics
-     ball.position.copy(ballBody.position);
-     ball.quaternion.copy(ballBody.quaternion);
+   // Box
+   const geometry = new THREE.BoxBufferGeometry(2, 2, 2)
+   const material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
 
-     // Render the scene
-     renderer.render(scene, camera);
+   mesh = new THREE.Mesh(geometry, material)
+   scene.add(mesh)
  }
 
- // Run the animation
- animate();
+ function onWindowResize() {
+   camera.aspect = window.innerWidth / window.innerHeight
+   camera.updateProjectionMatrix()
+   renderer.setSize(window.innerWidth, window.innerHeight)
+ }
+
+ function initCannon() {
+   world = new CANNON.World()
+
+   // Box
+   const shape = new CANNON.Box(new CANNON.Vec3(1, 1, 1))
+   body = new CANNON.Body({
+     mass: 1,
+   })
+   body.addShape(shape)
+   body.angularVelocity.set(0, 10, 0)
+   body.angularDamping = 0.5
+   world.addBody(body)
+ }
+
+ function animate() {
+   requestAnimationFrame(animate)
+
+   // Step the physics world
+   world.fixedStep()
+
+   // Copy coordinates from cannon.js to three.js
+   mesh.position.copy(body.position)
+   mesh.quaternion.copy(body.quaternion)
+
+   // Render three.js
+   renderer.render(scene, camera)
+ }
