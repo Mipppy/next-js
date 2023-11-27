@@ -1,11 +1,119 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Mippymagic.com</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <h1>great webpage right?</h1>
-        <script src="script.js"></script>
-    </body>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <meta name="keywords" content="Flight Simulator, Canvas, Replit, Game,Online Game, 3d game, Javascript, HTML,CSS, flight, simulator">
+  <meta name="author" content="replit.com/@mippymagic1">
+  <meta name="description" content="A flight simulator made with Javascript, HTML, CSS">
+  <title>3D Flight Simulator</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body id="body">
+  <div class="game-window-div">
+    <canvas id="main" width="800" height="600" ></canvas>
+    <div id="pageOnLoad">
+      <div id="startupButtons">
+        <br>
+        <h1 style="margin-top: 0px; text-align: center;">3D plane game</h1>
+        <h4 id=""></h4>
+        <button id="playLevels" onclick="levelGUI()">Play</button>
+        <button id="Freefly" onclick="loadWithWait()">Free Fly</button>
+      </div>
+      <div id="buttonContents">
+        <button id="achievements" onclick="displayMenu('achievements')"><img src="assets/achievements.svg" width="50" height="50" title="Achievements"></img></button>
+        <button id="settings" onclick="displayMenu('settings')"><img src="assets/settings.svg" width="50" height="50" title="Settings"></img></button>
+        <button id="help" onclick="displayMenu('help')"><img src="assets/help.svg" width="50" height="50" title="Help"></img></button>
+        <button id="about" onclick="displayMenu('about')"><img src="assets/about.svg" width="50" height="50" title="About"></img></button>
+      </div>
+    <div id="aboutDiv" class="pullup">
+      <button id="closeUpMenu" onclick="displayMenu('close')">X</button>
+      <h3 style="text-decoration: underline; text-align: center;">About</h3>
+      <p>A project made by Mippy in 2023</p> 
+      <br>
+      <a href="github.com">Source Code</a>
+      <br>
+      <p>Major thanks to pman10 for creating the rendering and plane physics.</p>
+      <p>I can't do that math and even just understanding how it worked took me hours.</p>
+      <br>
+      <p>DO NOT TAKE CREDIT FOR MY OR THE ORIGINAL AUTHOR'S WORK!!! IF USED IN MEDIA OR ANOTHER SITE, PLEASE CITE/THANK/RECOGNIZE US!!!</p>
+      <p>Apache 2.0 License</p>
+    </div>
+    <div id="helpDiv" class="pullup">
+      <button id="closeUpMenu" onclick="displayMenu('close')">X</button>
+      <h3 style="text-align: center; text-decoration: underline;">Help</h3>
+      <div id="column">
+      <p style="text-decoration: underline;">Controls</p>
+      <p>Pitch: W,S</p>
+      <p>Roll: A,D</p>
+      <p>Yaw: Q,E</p>
+      <p>Speed up: I</p>
+      <p>Speed down: K</p>
+      <p> Shoot: J</p>
+      <p> Camera: C</p>
+      <p> Restart: R</p>
+      <p> Screenshot: B</p>
+      </div>
+      <div id="column">
+        Nothing yet!
+      </div>
+      <div id="column">
+        Nothing yet!
+      </div>
+    </div>
+    <div id="settingsDiv" class="pullup">
+      <button id="closeUpMenu" onclick="displayMenu('close')">X</button>
+    <h2 style="text-align: center;">
+      ||Settings||
+    </h2>
+    <div>
+      Thrust:
+      <input type="number" max="500" min="-10" value="15" id="thrust" onkeyup=enforceMinMax(this)>
+    </div>
+    <div> 
+      Max Throttle:
+      <input type="number" max="5" min="1" value="1" id="throttle" onkeyup=enforceMinMax(this)>
+    </div>
+    <div>
+        Pitch:
+      <input type="number" max="360" min="1" value="180" id="pitch" onkeyup=enforceMinMax(this)>
+    </div>
+    <div>
+      Senstivity:
+      <input type="number" max="3" min="0.1" value="1.0" id="senstivity" onkeyup="enforceMinMax(this)">
+    </div>
+    <div>
+      Render Distance:
+      <input type="number" max="100000" min="0" value="30000" id="render" onkeyup="enforceMinMax(this)">
+    </div>
+    </div>
+    <div id="achievementsDiv" class="pullup">
+      <button id="closeUpMenu" onclick="displayMenu('close')">X</button>
+      <h2 style="text-align: center; text-decoration: underline;">Achievements</h2>
+      <input type="radio" name="achievement_sort_select" id="ach_sort0" class="ach_sort" checked>
+      <label for="ach_sort0">All</label>
+      <input type="radio" name="achievement_sort_select" id="ach_sort1" class="ach_sort">
+      <label for="ach_sort1">Completed</label>
+      <input type="radio" name="achievement_sort_select" id="ach_sort2" class="ach_sort">
+      <label for="ach_sort2">Uncompleted</label>
+    </div>
+  </div>
+  <div style="display: none;" id="loading">
+    <div id="loadingbar"></div>
+  </div>
+  <h2 id="currentFileLoading" style="display:none;"></h2>
+  <script src="load.js"></script>
+  <!-- <script src="diff.js"></script>
+  <script src="adj_canvas_size.js"></script>
+  <script src="key.js"></script>
+  <script src="gyro.js"></script>
+  <script src="quat.js"></script>
+  <script src="model.js"></script>
+  <script src="draw.js"></script>
+  <script src="physical_behavior.js"></script>
+  <script src="script1.js"></script> -->
+</body>
+
 </html>
